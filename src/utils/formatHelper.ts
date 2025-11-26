@@ -17,7 +17,7 @@ export const formatBytes = (bytes: number, isSpeed = false, decimals = 2) => {
   let i = Math.floor(Math.log(bytes) / Math.log(k));
   let value = bytes / Math.pow(k, i);
 
-  // 如果值大于等于1000，则进位到下一个单位
+  // If value >= 1000, move to the next unit
   if (value >= 1000 && i < sizes.length - 1) {
     i++;
     value = bytes / Math.pow(k, i);
@@ -39,17 +39,17 @@ export const formatUptime = (seconds: number) => {
 
   let uptimeString = "";
   if (days > 0) {
-    uptimeString += `${days}天`;
+    uptimeString += `${days}d`;
   }
   if (hrs > 0) {
-    uptimeString += `${hrs}小时`;
+    uptimeString += `${hrs}h`;
   }
   if (mns > 0 && days === 0) {
     // Only show minutes if uptime is less than a day
-    uptimeString += `${mns}分钟`;
+    uptimeString += `${mns}m`;
   }
   if (uptimeString === "") {
-    return "刚刚";
+    return "just now";
   }
 
   return uptimeString;
@@ -60,27 +60,28 @@ export const formatPrice = (
   currency: string,
   billingCycle: number
 ) => {
-  if (price === -1) return "免费";
+  if (price === -1) return "free";
   if (price === 0) return "";
   if (!currency || !billingCycle) return "N/A";
 
-  let cycleStr = `${billingCycle}天`;
+  let cycleStr = `${billingCycle} days`;
+
   if (billingCycle < 0) {
     return `${currency}${price.toFixed(2)}`;
   } else if (billingCycle === 30 || billingCycle === 31) {
-    cycleStr = "月";
+    cycleStr = "month";
   } else if (billingCycle >= 89 && billingCycle <= 92) {
-    cycleStr = "季";
+    cycleStr = "quarter";
   } else if (billingCycle >= 180 && billingCycle <= 183) {
-    cycleStr = "半年";
+    cycleStr = "half year";
   } else if (billingCycle >= 364 && billingCycle <= 366) {
-    cycleStr = "年";
+    cycleStr = "year";
   } else if (billingCycle >= 730 && billingCycle <= 732) {
-    cycleStr = "两年";
+    cycleStr = "2 years";
   } else if (billingCycle >= 1095 && billingCycle <= 1097) {
-    cycleStr = "三年";
+    cycleStr = "3 years";
   } else if (billingCycle >= 1825 && billingCycle <= 1827) {
-    cycleStr = "五年";
+    cycleStr = "5 years";
   }
 
   return `${currency}${price.toFixed(2)}/${cycleStr}`;
@@ -90,20 +91,20 @@ export const formatTrafficLimit = (
   limit?: number,
   type?: "sum" | "max" | "min" | "up" | "down"
 ) => {
-  if (!limit) return "未设置";
+  if (!limit) return "not set";
 
   const limitText = formatBytes(limit);
 
   const typeText =
     {
-      sum: "总和",
-      max: "最大值",
-      min: "最小值",
-      up: "上传",
-      down: "下载",
+      sum: "total",
+      max: "maximum",
+      min: "minimum",
+      up: "upload",
+      down: "download",
     }[type || "max"] || "";
 
-  return `总 ${limitText} (${typeText})`;
+  return `Total ${limitText} (${typeText})`;
 };
 
 export const getProgressBarClass = (percentage: number) => {
